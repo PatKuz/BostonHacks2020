@@ -1,17 +1,28 @@
 '''
-Opens a webcam window, and awaits user to input 's'.
+Opens a webcam window, and awaits user to input 'q'.
 
 Saves a screenshot in running dir and closes
 '''
-
 import cv2
+import time
+
 camera = cv2.VideoCapture(0)
+lastCapture = time.time()
+
+#method to check if a second has passed
+def checkTime(curTime):
+    if(time.time() - curTime > 1):
+        #overwrites the previous image captured
+        cv2.imwrite('test.jpg',image)
+        lastCapture = time.time()
+
 while True:
     return_value,image = camera.read()
-    gray = cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
-    cv2.imshow('image',gray)
-    if cv2.waitKey(1)& 0xFF == ord('s'):
-        cv2.imwrite('test.jpg',image)
-        break
+    cv2.imshow('image',image) 
+    checkTime(lastCapture)
+    #quits with the key q
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
 camera.release()
 cv2.destroyAllWindows()
