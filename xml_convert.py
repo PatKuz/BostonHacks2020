@@ -8,10 +8,23 @@ def convert(path_to_folder):
         if not file.startswith('.'):
             tree = xml.parse(path_to_folder+'/'+file)
             root = tree.getroot()
-            for element in root.iter():
-                print(element,file)
-            row = 'TRAINING,gs://images/'+str(file)+','+
-            print(row)
+            for element in root.iter('object'):
+                height = float(root.find('size').find('height').text)
+                width = float(root.find('size').find('width').text)
+                name = element.find('name').text
+                if name == 'with_mask':
+                    name='mask'
+                elif name == 'without_mask':
+                    name='no_mask'
+                else:
+                    name='improper_mask'
+                xmin = str(float(element.find('bndbox').find('xmin').text/width))
+                ymin = str(float(element.find('bndbox').find('ymin').text/height))
+                xmax = str(float(element.find('bndbox').find('xmax').text/width))
+                ymax = str(float(element.find('bndbox').find('ymax').text)/height)
+
+                row = 'TRAINING,gs://images/'+str(file)+','+str(name)+','+xmin+','+ymin+',,,'+xmax+','+ymax+',,'
+                print(row)
 
 if __name__ == '__main__':
     try:
@@ -19,4 +32,3 @@ if __name__ == '__main__':
     except:
         print('Missing folder path')
     df = convert(p)
-    df.to_csv(('/Users/pkuz/Desktop/BostonHacks2020'),index=None)
