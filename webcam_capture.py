@@ -9,8 +9,10 @@ import time
 camera = cv2.VideoCapture(0)
 lastCapture = time.time()
 
+#method to check if a second has passed
 def checkImg(curTime):
     if(time.time() - curTime > 1):
+        #overwrites the previous image captured
         cv2.imwrite('test.jpg',image)
         lastCapture = time.time()
 
@@ -18,6 +20,7 @@ while True:
     return_value,image = camera.read()
     cv2.imshow('image',image) 
     checkImg(lastCapture)
+    #quits with the key q
     if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
