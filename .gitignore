@@ -1,0 +1,22 @@
+# local env files
+.env.local
+.env.*.local
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.code-workspace
+
+config
+creds.yaml
+.idea/*
+env/*
+__pycache__/*
+*.pyc
+.vscode/
+config
