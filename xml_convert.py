@@ -20,12 +20,13 @@ def convert(path_to_folder):
                     name='no_mask'
                 else:
                     name='improper_mask'
-                xmin = str(float(element.find('bndbox').find('xmin').text/width))
-                ymin = str(float(element.find('bndbox').find('ymin').text/height))
-                xmax = str(float(element.find('bndbox').find('xmax').text/width))
-                ymax = str(float(element.find('bndbox').find('ymax').text)/height)
+                xmin = str(min(1,float(element.find('bndbox').find('xmin').text)/width))
+                ymin = str(min(1,float(element.find('bndbox').find('ymin').text)/height))
+                xmax = str(min(1,float(element.find('bndbox').find('xmax').text)/width))
+                ymax = str(min(1,float(element.find('bndbox').find('ymax').text)/height))
+                file = file[:-3]+'png'
 
-                rows.append('TRAINING,gs://images/'+str(file)+','+str(name)+','+xmin+','+ymin+',,,'+xmax+','+ymax+',,')
+                rows.append('UNASSIGNED,gs://bhacks2020/images/'+str(file)+','+str(name)+','+xmin+','+ymin+',,,'+xmax+','+ymax+',,\n')
     return rows
 
 if __name__ == '__main__':
