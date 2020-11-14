@@ -1,6 +1,8 @@
 import pandas as p
 import xml.etree.ElementTree as xml
-import sys, os
+import sys
+import os
+
 
 def convert(path_to_folder):
     rows = []
@@ -23,8 +25,8 @@ def convert(path_to_folder):
                 xmax = str(float(element.find('bndbox').find('xmax').text/width))
                 ymax = str(float(element.find('bndbox').find('ymax').text)/height)
 
-                row = 'TRAINING,gs://images/'+str(file)+','+str(name)+','+xmin+','+ymin+',,,'+xmax+','+ymax+',,'
-                print(row)
+                rows.append('TRAINING,gs://images/'+str(file)+','+str(name)+','+xmin+','+ymin+',,,'+xmax+','+ymax+',,')
+    return rows
 
 if __name__ == '__main__':
     try:
@@ -32,3 +34,6 @@ if __name__ == '__main__':
     except:
         print('Missing folder path')
     df = convert(p)
+
+    f = open("training.csv","w")
+    f.writelines(df)
