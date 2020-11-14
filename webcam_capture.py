@@ -10,19 +10,19 @@ camera = cv2.VideoCapture(0)
 lastCapture = time.time()
 
 #method to check if a second has passed
-def checkTime(curTime):
-    if(time.time() - curTime > 1):
+def checkTime(curTime,image):
+    if(time.time() - curTime > 0.5):
         #overwrites the previous image captured
-        cv2.imwrite('test.jpg',image)
+        cv2.imwrite('frame.jpg',image)
         lastCapture = time.time()
 
-while True:
-    return_value,image = camera.read()
-    cv2.imshow('image',image) 
-    checkTime(lastCapture)
-    #quits with the key q
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
-
-camera.release()
-cv2.destroyAllWindows()
+def getVideoFrame():
+    while(1):
+        return_value,image = camera.read()
+        cv2.imshow('image',image)
+        checkTime(lastCapture,image)
+        #quits with the key q
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+    camera.release()
+    cv2.destroyAllWindows()
