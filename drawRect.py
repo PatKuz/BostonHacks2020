@@ -8,4 +8,4 @@ def drawRect(file_path,label,x1,y1,x2,y2):
     draw.polygon(vertices,fill=None,outline=(0,255,255))
     draw.text((x1*1080,y1*720), label)
     im.save('Archived/bounded_frame.jpg', quality=95)
-    return 'Archived/bounded_frame.jpg.jpg'
+    return 'Archived/bounded_frame.jpg'
