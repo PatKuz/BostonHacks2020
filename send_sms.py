@@ -6,7 +6,11 @@ import socketserver
 import threading
 
 
+<<<<<<< HEAD
 PORT = 8000
+=======
+class Messenger:
+>>>>>>> b52d4816cbb0448b64f0869e878dda32ba1211ee
 
 def start_server():
         Handler = http.server.SimpleHTTPRequestHandler
@@ -42,6 +46,7 @@ def send_message(messageToSend, toNum=None, image=None):
                         to=toNum,
                         media_url=[imageUrl]
                     )
+<<<<<<< HEAD
     else:
         message = client.messages.create(
             body=messageToSend,
@@ -51,3 +56,9 @@ def send_message(messageToSend, toNum=None, image=None):
     print(message)
 
     
+=======
+
+        print(message.sid)
+m = Messenger()
+m.send_message("buffalo")
+>>>>>>> b52d4816cbb0448b64f0869e878dda32ba1211ee

@@ -12,6 +12,8 @@
 *.sw?
 *.code-workspace
 
+.DS_Store/*
+
 config
 creds.yaml
 .idea/*
