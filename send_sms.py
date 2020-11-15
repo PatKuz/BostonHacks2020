@@ -1,30 +1,26 @@
-# Download the helper library from https://www.twilio.com/docs/python/install
 
 import yaml
-
-creds = yaml.safe_load(open("creds.yaml", "r"))
-
 from twilio.rest import Client
 
+class Messager: 
 
-# Your Account Sid and Auth Token from twilio.com/console
-# and set the environment variables. See http://twil.io/secure
+    def __init__(self):
+        self.creds = yaml.safe_load(open("creds.yaml", "r"))
+        self.account_sid = self.creds['ACCOUNT_SID']
+        self.auth_token = self.creds['AUTH_TOKEN']
+        self.client = Client(self.account_sid, self.auth_token)
+        self.toNum = self.creds['to']
+        self.fromNum = self.creds['from']
 
-
-
-account_sid = creds['ACCOUNT_SID']
-auth_token = creds['AUTH_TOKEN']
-client = Client(account_sid, auth_token)
-
-message = "This is a test"
-toNum = creds['to']
-fromNum = creds['from'] 
-
-message = client.messages \
-                .create(
-                     body=message,
-                     from_=fromNum,
-                     to=toNum
-                 )
-
-print(message.sid)
+    def send_message(self, messageToSend, toNum=None):
+        if toNum == None:
+            self.toNum = self.toNum
+        else:
+            self.toNum = toNum
+        message = self.client.messages.create(
+                        body=messageToSend,
+                        from_=self.fromNum,
+                        to=self.toNum
+                    )
+        
+        print(message.sid)
