@@ -74,27 +74,32 @@ show_frame - displays frame to the Tkinter gui window. If 2 seconds have passed,
 passes current frame to be evaluated by AutoML.
 '''
 def show_frame():
-    global lastCapture, evalTimer
-    _, frame = cap.read()
-    cv2image = cv2.flip(frame, 1)
+    try:
+        global lastCapture, evalTimer
+        _, frame = cap.read()
+        cv2image = cv2.flip(frame, 1)
 
-    checkEvalTime()
-    if(message_sent == False):
-        evalTimer = time.time()
+        checkEvalTime()
+        if(message_sent == False):
+            evalTimer = time.time()
 
-    #cv2 image is the frame we want to analyze
-    #only saves img and analyzes every 2 seconds
-    if time.time() - lastCapture > 2:
-            checkEval(cv2image)
-            lastCapture = time.time()
+        #cv2 image is the frame we want to analyze
+        #only saves img and analyzes every 2 seconds
+        if time.time() - lastCapture > 2:
+                checkEval(cv2image)
+                lastCapture = time.time()
 
-    img = Image.fromarray(cv2image)
-    r, g, b = img.split()
-    img = Image.merge('RGB', (b, g, r))
-    imgtk = ImageTk.PhotoImage(image=img)
-    lmain.imgtk = imgtk
-    lmain.configure(image=imgtk)
-    lmain.after(10, show_frame)
+        img = Image.fromarray(cv2image)
+        r, g, b = img.split()
+        img = Image.merge('RGB', (b, g, r))
+        imgtk = ImageTk.PhotoImage(image=img)
+        lmain.imgtk = imgtk
+        lmain.configure(image=imgtk)
+        lmain.after(10, show_frame)
+    except KeyboardInterrupt:
+        window.destroy()
+        cap.release()
+        cv2.destroyAllWindows()
 
 
 #Slider window (slider controls stage position)
