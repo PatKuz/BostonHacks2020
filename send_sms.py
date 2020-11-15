@@ -1,12 +1,11 @@
 import yaml
 from twilio.rest import Client
-from pyngrok import ngrok
 import http.server
 import socketserver
 import threading
 
 
-PORT = 8000
+PORT = 5000
 
 def start_server():
     Handler = http.server.SimpleHTTPRequestHandler
@@ -19,7 +18,8 @@ def send_message(messageToSend, toNum=None, image=None):
     account_sid = creds['ACCOUNT_SID']
     auth_token = creds['AUTH_TOKEN']
     client = Client(account_sid, auth_token)
-    toNum = creds['to']
+    if toNum == None:
+        toNum = creds['to']
     fromNum = creds['from']
 
     if toNum == None:
@@ -29,11 +29,7 @@ def send_message(messageToSend, toNum=None, image=None):
     if image:
         target = threading.Thread(target=start_server)
         target.start()
-        tunnels = ngrok.get_tunnels()
-        for tunnel in tunnels:
-            ngrok.disconnect(tunnel.public_url)
-        url = ngrok.connect(PORT)
-        imageUrl = url.public_url + '//' + image
+        imageUrl = 'http://09721765bc2d.ngrok.io/' + image
         print("ImageURL")
         print(imageUrl)
         message = client.messages.create(
@@ -49,5 +45,3 @@ def send_message(messageToSend, toNum=None, image=None):
             to=toNum,
         )
     print(message)
-
-    
