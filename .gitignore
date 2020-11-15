@@ -22,3 +22,4 @@ __pycache__/*
 *.pyc
 .vscode/
 config
+google_cred.json

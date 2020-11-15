@@ -6,6 +6,11 @@ from evaluation import get_prediction
 from drawRect import drawRect
 from send_sms import send_message
 
+'''
+evalTimer - used to measure elapsed time since last sent message
+lastCapture - used to measure elapsed time since last frame evaluation
+message_sent - tracks if a text message has been sent in the last 15 seconds
+'''
 evalTimer = time.time()
 lastCapture = time.time()
 message_sent = False
@@ -19,6 +24,10 @@ window.config(background="#FFFFFF")
 imageFrame = tk.Frame(window, width=600, height=500)
 imageFrame.grid(row=0, column=0, padx=10, pady=2)
 
+'''
+checkEvalTime - checks if 15 seconds have elapsed from last text sent, if yes,
+sets global message_sent to false and resets timer. If no message sent in last 15 seconds, breaks
+'''
 def checkEvalTime():
     global evalTimer, message_sent
     curTime = time.time()
@@ -28,7 +37,11 @@ def checkEvalTime():
         evalTimer = time.time()
 
 
-#method to check if a second has passed
+'''
+checkEval - image (OpenCV) - opens credentials with phone number destination and twilio auth tokens.
+Passes openCv image, writes it to local dir, and passes it through AutoML trained for mask states.
+If conditions are met, will text alert to user based on the detected mask state.
+'''
 def checkEval(image):
     creds = yaml.safe_load(open("creds.yaml", "r"))
     toNum = creds['to']
@@ -53,8 +66,13 @@ def checkEval(image):
 #Capture video frames
 lmain = tk.Label(imageFrame)
 lmain.grid(row=0, column=0)
+#initializes video feed w/ OpenCV
 cap = cv2.VideoCapture(0)
 
+'''
+show_frame - displays frame to the Tkinter gui window. If 2 seconds have passed,
+passes current frame to be evaluated by AutoML.
+'''
 def show_frame():
     global lastCapture, evalTimer
     _, frame = cap.read()
