@@ -42,10 +42,12 @@ def checkEval(image):
             if label=='improper_mask':
               msg = 'Improper Mask Detected: Better get that mask over your nose!'
               message_sent = True
+              evalTimer = time.time()
             else:
                  msg = 'No Mask Detected: STOP! You need your mask!'
                  send_message(msg,toNum="+14845385080",image=img)
                  message_sent = True
+                 evalTimer = time.time()
 
 #Capture video frames
 lmain = tk.Label(imageFrame)
@@ -53,11 +55,15 @@ lmain.grid(row=0, column=0)
 cap = cv2.VideoCapture(0)
 
 def show_frame():
-    global lastCapture
+    global lastCapture, evalTimer
     _, frame = cap.read()
     frame = cv2.flip(frame, 1)
-    cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
+    cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)\
+    
     checkEvalTime()
+    if(message_sent == False):
+        evalTimer = time.time()
+
     #cv2 image is the frame we want to analyze
     #only saves img and analyzes every 2 seconds
     if time.time() - lastCapture > 2:
