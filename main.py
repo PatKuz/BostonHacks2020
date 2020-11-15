@@ -89,6 +89,8 @@ def show_frame():
             lastCapture = time.time()
 
     img = Image.fromarray(cv2image)
+    r, g, b = img.split()
+    img = Image.merge('RGB', (b, g, r))
     imgtk = ImageTk.PhotoImage(image=img)
     lmain.imgtk = imgtk
     lmain.configure(image=imgtk)
