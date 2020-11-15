@@ -1,26 +1,53 @@
-
 import yaml
 from twilio.rest import Client
+from pyngrok import ngrok
+import http.server
+import socketserver
+import threading
 
-class Messager: 
 
-    def __init__(self):
-        self.creds = yaml.safe_load(open("creds.yaml", "r"))
-        self.account_sid = self.creds['ACCOUNT_SID']
-        self.auth_token = self.creds['AUTH_TOKEN']
-        self.client = Client(self.account_sid, self.auth_token)
-        self.toNum = self.creds['to']
-        self.fromNum = self.creds['from']
+PORT = 8000
 
-    def send_message(self, messageToSend, toNum=None):
-        if toNum == None:
-            self.toNum = self.toNum
-        else:
-            self.toNum = toNum
-        message = self.client.messages.create(
+def start_server():
+        Handler = http.server.SimpleHTTPRequestHandler
+        with socketserver.TCPServer(("", PORT), Handler) as httpd:
+            print("serving at port", PORT)
+            httpd.serve_forever()
+
+def send_message(messageToSend, toNum=None, image=None):
+    creds = yaml.safe_load(open("creds.yaml", "r"))
+    account_sid = creds['ACCOUNT_SID']
+    auth_token = creds['AUTH_TOKEN']
+    client = Client(account_sid, auth_token)
+    toNum = creds['to']
+    fromNum = creds['from']
+
+    if toNum == None:
+        toNum = toNum
+    else:
+        toNum = toNum
+    if image:
+        target = threading.Thread(target=start_server)
+        target.start()
+        tunnels = ngrok.get_tunnels()
+        for tunnel in tunnels:
+            ngrok.disconnect(tunnel.public_url)
+        url = ngrok.connect(PORT)
+        imageUrl = url.public_url + '//' + image
+        print("ImageURL")
+        print(imageUrl)
+        message = client.messages.create(
                         body=messageToSend,
-                        from_=self.fromNum,
-                        to=self.toNum
+                        from_=fromNum,
+                        to=toNum,
+                        media_url=[imageUrl]
                     )
-        
-        print(message.sid)
+    else:
+        message = client.messages.create(
+            body=messageToSend,
+            from_=fromNum,
+            to=toNum,
+        )
+    print(message)
+
+    
