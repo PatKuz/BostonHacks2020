@@ -9,6 +9,8 @@ from drawRect import drawRect
 from send_sms import send_message
 
 evalTimer = time.time()
+lastCapture = time.time()
+message_sent = False
 
 #Set up GUI
 window = tk.Tk()  #Makes main window
@@ -19,22 +21,31 @@ window.config(background="#FFFFFF")
 imageFrame = tk.Frame(window, width=600, height=500)
 imageFrame.grid(row=0, column=0, padx=10, pady=2)
 
+def checkEvalTime():
+    global evalTimer, message_sent
+    curTime = time.time()
+
+    if(message_sent and curTime - evalTimer > 30):
+        message_sent = False
+        evalTimer = time.time()
+
+
 #method to check if a second has passed
 def checkEval(image):
     #overwrites the previous image captured
     cv2.imwrite('Active_Captures/frame.jpg',image)
     label,x1,y1,x2,y2 = get_prediction('Active_Captures/frame.jpg')
-    global evalTimer
+    global message_sent
     if label != None and label!='mask':
-        if ((time.time() - evalTimer > 30)):
+        if (message_sent == False):
             img = drawRect('Active_Captures/frame.jpg',label,x1,y1,x2,y2)
             if label=='improper_mask':
               msg = 'Improper Mask Detected: Better get that mask over your nose!'
-              evalTimer = time.time()
+              message_sent = True
             else:
                  msg = 'No Mask Detected: STOP! You need your mask!'
                  send_message(msg,toNum="+14845385080",image=img)
-                 evalTimer = time.time()
+                 message_sent = True
 
 #Capture video frames
 lmain = tk.Label(imageFrame)
@@ -42,11 +53,11 @@ lmain.grid(row=0, column=0)
 cap = cv2.VideoCapture(0)
 
 def show_frame():
-    lastCapture = time.time()
+    global lastCapture
     _, frame = cap.read()
     frame = cv2.flip(frame, 1)
     cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
-
+    checkEvalTime()
     #cv2 image is the frame we want to analyze
     #only saves img and analyzes every 2 seconds
     if time.time() - lastCapture > 2:
