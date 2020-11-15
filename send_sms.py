@@ -17,6 +17,7 @@ def send_message(messageToSend, toNum=None, image=None):
     creds = yaml.safe_load(open("creds.yaml", "r"))
     account_sid = creds['ACCOUNT_SID']
     auth_token = creds['AUTH_TOKEN']
+    ngrok_url = creds['NGROK_URL']
     client = Client(account_sid, auth_token)
     if toNum == None:
         toNum = creds['to']
@@ -29,7 +30,7 @@ def send_message(messageToSend, toNum=None, image=None):
     if image:
         target = threading.Thread(target=start_server)
         target.start()
-        imageUrl = 'http://09721765bc2d.ngrok.io/' + image
+        imageUrl = ngrok_url + '/' + image
         print("ImageURL")
         print(imageUrl)
         message = client.messages.create(
