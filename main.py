@@ -17,7 +17,7 @@ message_sent = False
 
 #Set up GUI
 window = tk.Tk()  #Makes main window
-window.wm_title("BHACKS 2020 Mask")
+window.wm_title("Mask-Detect")
 window.config(background="#312a2a")
 
 #Graphics window
@@ -74,37 +74,33 @@ show_frame - displays frame to the Tkinter gui window. If 2 seconds have passed,
 passes current frame to be evaluated by AutoML.
 '''
 def show_frame():
-    try:
-        global lastCapture, evalTimer
-        _, frame = cap.read()
-        cv2image = cv2.flip(frame, 1)
+    global lastCapture, evalTimer
+    _, frame = cap.read()
+    cv2image = cv2.flip(frame, 1)
 
-        checkEvalTime()
-        if(message_sent == False):
-            evalTimer = time.time()
+    checkEvalTime()
+    if(message_sent == False):
+        evalTimer = time.time()
 
-        #cv2 image is the frame we want to analyze
-        #only saves img and analyzes every 2 seconds
-        if time.time() - lastCapture > 2:
-                checkEval(cv2image)
-                lastCapture = time.time()
+    #cv2 image is the frame we want to analyze
+    #only saves img and analyzes every 2 seconds
+    if time.time() - lastCapture > 2:
+            checkEval(cv2image)
+            lastCapture = time.time()
 
-        img = Image.fromarray(cv2image)
-        r, g, b = img.split()
-        img = Image.merge('RGB', (b, g, r))
-        imgtk = ImageTk.PhotoImage(image=img)
-        lmain.imgtk = imgtk
-        lmain.configure(image=imgtk)
-        lmain.after(10, show_frame)
-    except KeyboardInterrupt:
-        window.destroy()
-        cap.release()
-        cv2.destroyAllWindows()
+    img = Image.fromarray(cv2image)
+    r, g, b = img.split()
+    img = Image.merge('RGB', (b, g, r))
+    imgtk = ImageTk.PhotoImage(image=img)
+    lmain.imgtk = imgtk
+    lmain.configure(image=imgtk)
+    lmain.after(10, show_frame)
+
 
 
 #Slider window (slider controls stage position)
-sliderFrame = tk.Frame(window, width=600, height=100)
-sliderFrame.grid(row = 600, column=0, padx=10, pady=2)
+#sliderFrame = tk.Frame(window, width=600, height=100)
+#sliderFrame.grid(row = 600, column=0, padx=10, pady=2)
 
 
 show_frame()  #Display 2
