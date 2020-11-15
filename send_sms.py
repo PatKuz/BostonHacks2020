@@ -2,7 +2,7 @@
 import yaml
 from twilio.rest import Client
 
-class Messager: 
+class Messenger:
 
     def __init__(self):
         self.creds = yaml.safe_load(open("creds.yaml", "r"))
@@ -22,5 +22,7 @@ class Messager:
                         from_=self.fromNum,
                         to=self.toNum
                     )
-        
+
         print(message.sid)
+m = Messenger()
+m.send_message("buffalo")
