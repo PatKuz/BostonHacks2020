@@ -13,7 +13,7 @@ lastCapture = time.time()
 def checkTime(curTime,image):
     if(time.time() - curTime > 0.5):
         #overwrites the previous image captured
-        cv2.imwrite('frame.jpg',image)
+        cv2.imwrite('Active_Captures/frame.jpg',image)
         lastCapture = time.time()
 
 def getVideoFrame():
@@ -26,3 +26,5 @@ def getVideoFrame():
                 break
     camera.release()
     cv2.destroyAllWindows()
+
+getVideoFrame()
