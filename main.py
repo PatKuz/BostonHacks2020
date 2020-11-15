@@ -1,7 +1,4 @@
 from webcam_capture import getVideoFrame
-from send_sms import send_message
-from evaluation import get_prediction
-from drawRect import drawRect
 import time
 
 #starts webcam and begins implicit screenshot capture

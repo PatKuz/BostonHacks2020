@@ -3,7 +3,7 @@ Opens a webcam window, and awaits user to input 'q' to quit.
 |
 Saves a screenshot every half second in running dir
 '''
-import cv2, time, os
+import cv2, time
 from evaluation import get_prediction
 from drawRect import drawRect
 from send_sms import send_message
@@ -23,7 +23,6 @@ def checkEval(image):
         else:
             msg = 'No Mask Detected: STOP! You need your mask!'
         send_message(msg,toNum="+14845385080",image=img)
-        os.remove(img)
         time.sleep(5)
 
 def getVideoFrame():
