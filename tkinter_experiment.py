@@ -25,7 +25,7 @@ def checkEvalTime():
     global evalTimer, message_sent
     curTime = time.time()
 
-    if(message_sent and curTime - evalTimer > 30):
+    if(message_sent and curTime - evalTimer > 15):
         message_sent = False
         evalTimer = time.time()
 
@@ -33,21 +33,22 @@ def checkEvalTime():
 #method to check if a second has passed
 def checkEval(image):
     #overwrites the previous image captured
-    cv2.imwrite('Active_Captures/frame.jpg',image)
-    label,x1,y1,x2,y2 = get_prediction('Active_Captures/frame.jpg')
+    cv2.imwrite('Active_Captures/frame.jpg', image)
+    label, x1, y1, x2, y2 = get_prediction('Active_Captures/frame.jpg')
     global message_sent
-    if label != None and label!='mask':
+    if label != None and label != 'mask':
         if (message_sent == False):
-            img = drawRect('Active_Captures/frame.jpg',label,x1,y1,x2,y2)
-            if label=='improper_mask':
-              msg = 'Improper Mask Detected: Better get that mask over your nose!'
-              message_sent = True
-              evalTimer = time.time()
+            img = drawRect('Active_Captures/frame.jpg', label, x1, y1, x2, y2)
+            if label == 'improper_mask':
+                msg = 'Improper Mask Detected: Better get that mask over your nose!'
+                send_message(msg, toNum="+14845385080", image=img)
+                message_sent = True
+                evalTimer = time.time()
             else:
-                 msg = 'No Mask Detected: STOP! You need your mask!'
-                 send_message(msg,toNum="+14845385080",image=img)
-                 message_sent = True
-                 evalTimer = time.time()
+                msg = 'No Mask Detected: STOP! You need your mask!'
+                send_message(msg, toNum="+14845385080", image=img)
+                message_sent = True
+                evalTimer = time.time()
 
 #Capture video frames
 lmain = tk.Label(imageFrame)
