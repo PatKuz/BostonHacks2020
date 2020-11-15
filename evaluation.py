@@ -1,6 +1,13 @@
 import sys, yaml
 from google.cloud import automl
 
+'''
+get_prediction - passes image to be analyzed by pre-trained
+Google Cloud Vision API AutoML. Credentials for google cloud app auth are privately locked
+in creds.yaml file.
+
+ - returns predicted subject, and relative coordinates for corners of boxed subject
+'''
 def get_prediction(file_path):
     prediction_client = automl.PredictionServiceClient()
     creds = yaml.safe_load(open("creds.yaml", "r"))
