@@ -28,4 +28,4 @@ def get_prediction(file_path):
     if pred!='':
         return pred,coords[0].x,coords[0].y,coords[1].x,coords[1].y
     else:
-        return None
+        return None,None,None,None,None
