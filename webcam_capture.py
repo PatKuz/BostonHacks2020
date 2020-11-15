@@ -1,7 +1,7 @@
 '''
-Opens a webcam window, and awaits user to input 'q'.
-
-Saves a screenshot in running dir and closes
+Opens a webcam window, and awaits user to input 'q' to quit.
+|
+Saves a screenshot every half second in running dir
 '''
 import cv2
 import time
