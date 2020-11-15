@@ -29,7 +29,7 @@ def checkEval(image):
         else:
             msg = 'No Mask Detected: STOP! You need your mask!'
         send_message(msg,toNum="+14845385080",image=img)
-        time.sleep(5)
+        #time.sleep(5)
 
 #Capture video frames
 lmain = tk.Label(imageFrame)
@@ -48,7 +48,7 @@ def show_frame():
     imgtk = ImageTk.PhotoImage(image=img)
     lmain.imgtk = imgtk
     lmain.configure(image=imgtk)
-    lmain.after(10, show_frame) 
+    lmain.after(10, show_frame)
 
 
 #Slider window (slider controls stage position)
