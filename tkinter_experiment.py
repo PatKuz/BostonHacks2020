@@ -58,9 +58,8 @@ cap = cv2.VideoCapture(0)
 def show_frame():
     global lastCapture, evalTimer
     _, frame = cap.read()
-    frame = cv2.flip(frame, 1)
-    cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)\
-    
+    cv2image = cv2.flip(frame, 1)
+
     checkEvalTime()
     if(message_sent == False):
         evalTimer = time.time()
@@ -70,12 +69,12 @@ def show_frame():
     if time.time() - lastCapture > 2:
             checkEval(cv2image)
             lastCapture = time.time()
-    
+
     img = Image.fromarray(cv2image)
     imgtk = ImageTk.PhotoImage(image=img)
     lmain.imgtk = imgtk
     lmain.configure(image=imgtk)
-    lmain.after(10, show_frame) 
+    lmain.after(10, show_frame)
 
 
 #Slider window (slider controls stage position)
