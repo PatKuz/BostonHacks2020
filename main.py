@@ -18,7 +18,7 @@ message_sent = False
 #Set up GUI
 window = tk.Tk()  #Makes main window
 window.wm_title("BHACKS 2020 Mask")
-window.config(background="#FFFFFF")
+window.config(background="#312a2a")
 
 #Graphics window
 imageFrame = tk.Frame(window, width=600, height=500)
