@@ -1,0 +1,7 @@
+ACCOUNT_SID: "insert-twilio-secret-id"
+AUTH_TOKEN: "insert-twilio-auth-token"
+to: "insert-to-number"
+from: "insert-from-number"
+PROJ_ID: "insert-gcloud-project-id"
+MODEL_ID: "insert-automl-model-id"
+NGROK_URL: "insert-ngrok-url"
